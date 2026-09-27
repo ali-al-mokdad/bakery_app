@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-body bg-cream-50 text-bakery-900 transition-colors duration-300;
+  }
+  .dark body {
+    @apply bg-bakery-900 text-cream-100;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-bakery-600 px-6 py-3 text-sm font-semibold text-white shadow-soft transition-all duration-300 hover:bg-bakery-700 hover:shadow-card hover:-translate-y-0.5 active:translate-y-0;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-bakery-600 px-6 py-3 text-sm font-semibold text-bakery-700 transition-all duration-300 hover:bg-bakery-600 hover:text-white hover:-translate-y-0.5 dark:text-bakery-200 dark:border-bakery-300;
+  }
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white shadow-soft transition-all duration-300 hover:bg-[#1ebc57] hover:shadow-card hover:-translate-y-0.5;
+  }
+  .card {
+    @apply rounded-2xl bg-white dark:bg-bakery-800/60 shadow-soft transition-all duration-300 hover:shadow-card;
+  }
+  .section {
+    @apply px-6 py-16 sm:px-10 lg:px-16;
+  }
+  .section-title {
+    @apply text-3xl sm:text-4xl font-bold text-bakery-900 dark:text-cream-50;
+  }
+  .input {
+    @apply w-full rounded-xl border border-bakery-200 dark:border-bakery-700 bg-white dark:bg-bakery-800 px-4 py-2.5 text-sm text-bakery-900 dark:text-cream-100 placeholder-bakery-400 focus:border-bakery-500 focus:outline-none focus:ring-2 focus:ring-bakery-200 dark:focus:ring-bakery-600 transition;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-semibold text-bakery-800 dark:text-cream-200;
+  }
+}
+
+/* Custom scrollbar for a slightly more premium feel */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(163, 97, 44, 0.35);
+  border-radius: 999px;
+}

@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String?
+  image        String?
+  displayOrder Int        @default(0)
+  isVisible    Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  menuItems    MenuItem[]
+
+  @@index([displayOrder])
+}
+
+model MenuItem {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String?
+  price        Float?
+  image        String?
+  categoryId   Int?
+  category     Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  isAvailable  Boolean  @default(true)
+  isFeatured   Boolean  @default(false)
+  isVisible    Boolean  @default(true)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([displayOrder])
+}
+
+model Gallery {
+  id           Int      @id @default(autoincrement())
+  image        String
+  caption      String?
+  displayOrder Int      @default(0)
+  isVisible    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([displayOrder])
+}
+
+model Settings {
+  id            Int      @id @default(autoincrement())
+  businessName  String   @default("Sweet Crumb Bakery")
+  logo          String?
+  coverImage    String?
+  description   String?
+  address       String?
+  phone         String?
+  whatsapp      String?
+  email         String?
+  facebook      String?
+  instagram     String?
+  tiktok        String?
+  mapsEmbedUrl  String?
+  openingHours  String?
+  currency      String   @default("USD")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
