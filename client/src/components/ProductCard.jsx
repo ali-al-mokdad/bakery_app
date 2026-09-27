@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { resolveImageUrl } from '../services/api';
 import { useSettings } from '../context/SettingsContext';
 
@@ -9,7 +10,7 @@ export function formatPrice(price, currency) {
   return `${symbol}${Number(price).toFixed(2)}`;
 }
 
-export default function ProductCard({ product, onClick }) {
+function ProductCard({ product, onClick }) {
   const { settings } = useSettings();
   const isUnavailable = !product.isAvailable;
 
@@ -78,3 +79,5 @@ export default function ProductCard({ product, onClick }) {
     </button>
   );
 }
+
+export default memo(ProductCard);

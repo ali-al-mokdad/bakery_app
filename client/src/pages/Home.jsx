@@ -23,13 +23,13 @@ export default function Home() {
     (async () => {
       try {
         const [items, cats, gal] = await Promise.all([
-          menuService.getAll(),
-          categoryService.getAll(),
-          galleryService.getAll(),
+          menuService.getAll({ featured: true, limit: 6 }),
+          categoryService.getAll({ limit: 6 }),
+          galleryService.getAll({ limit: 6 }),
         ]);
-        setFeatured(items.filter((p) => p.isFeatured).slice(0, 6));
-        setCategories(cats.slice(0, 6));
-        setGallery(gal.slice(0, 6));
+        setFeatured(items);
+        setCategories(cats);
+        setGallery(gal);
       } catch (err) {
         console.error(err);
       } finally {
@@ -41,7 +41,7 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden">
+      <section id="hero-section" className="relative">
         <div className="absolute inset-0">
           {settings?.coverImage ? (
             <img
@@ -86,6 +86,30 @@ export default function Home() {
             <WhatsAppButton message="Hello, I would like to know more about your bakery products." />
           </div>
         </div>
+
+        <button
+          onClick={() => {
+            const heroHeight = document.getElementById('hero-section')?.offsetHeight || 85 * window.innerHeight / 100;
+            window.scrollTo({ top: heroHeight, behavior: 'smooth' });
+          }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/80 hover:text-white transition-colors focus:outline-none"
+          aria-label="Scroll down"
+        >
+          <svg
+            className="h-7 w-7 animate-bounce"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
       </section>
 
       {loading ? (

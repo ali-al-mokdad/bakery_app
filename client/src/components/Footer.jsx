@@ -80,6 +80,9 @@ export default function Footer() {
       <div className="mx-auto mt-10 max-w-7xl border-t border-bakery-200/60 pt-6 text-center text-xs text-bakery-500 dark:border-bakery-800 dark:text-cream-300/60">
         © {new Date().getFullYear()} {settings?.businessName || 'Sweet Crumb Bakery'}. All rights reserved.
       </div>
+      <div className="mx-auto mt-4 text-center text-xs text-bakery-500 dark:text-cream-300/60">
+        Created by Ali Al Mokdad Contact: amokdad058@gmail.com | +96171123536
+      </div>
     </footer>
   );
 }

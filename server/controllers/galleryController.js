@@ -3,11 +3,17 @@ const asyncHandler = require('../utils/asyncHandler');
 const { deleteUploadedFile } = require('../utils/fileUtils');
 
 // GET /api/gallery - public: visible only, unless admin (?all=true and authenticated)
+// Query params: limit
 const getGalleryItems = asyncHandler(async (req, res) => {
   const showAll = req.query.all === 'true' && req.user;
+
+  const parsedLimit = Number(req.query.limit);
+  const take = Number.isInteger(parsedLimit) && parsedLimit > 0 ? parsedLimit : undefined;
+
   const items = await prisma.gallery.findMany({
     where: showAll ? {} : { isVisible: true },
     orderBy: { displayOrder: 'asc' },
+    take,
   });
   res.json(items);
 });

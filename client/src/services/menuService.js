@@ -1,11 +1,13 @@
 import api from './api';
 
 export const menuService = {
-  async getAll({ category, search, all = false } = {}) {
+  async getAll({ category, search, all = false, featured = false, limit } = {}) {
     const params = {};
     if (category && category !== 'all') params.category = category;
     if (search) params.search = search;
     if (all) params.all = true;
+    if (featured) params.featured = true;
+    if (limit) params.limit = limit;
     const { data } = await api.get('/api/menu', { params });
     return data;
   },

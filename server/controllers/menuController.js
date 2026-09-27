@@ -3,15 +3,19 @@ const asyncHandler = require('../utils/asyncHandler');
 const { deleteUploadedFile } = require('../utils/fileUtils');
 
 // GET /api/menu - public: visible + available items by default; admins (req.user) get everything
-// Query params: category, search, all=true (admin only)
+// Query params: category, search, all=true (admin only), featured, limit
 const getMenuItems = asyncHandler(async (req, res) => {
-  const { category, search } = req.query;
+  const { category, search, featured, limit } = req.query;
   const isAdminRequest = Boolean(req.user) && req.query.all === 'true';
 
   const where = {};
 
   if (!isAdminRequest) {
     where.isVisible = true;
+  }
+
+  if (featured === 'true') {
+    where.isFeatured = true;
   }
 
   if (category && category !== 'all') {
@@ -27,10 +31,14 @@ const getMenuItems = asyncHandler(async (req, res) => {
     ];
   }
 
+  const parsedLimit = Number(limit);
+  const take = Number.isInteger(parsedLimit) && parsedLimit > 0 ? parsedLimit : undefined;
+
   const items = await prisma.menuItem.findMany({
     where,
     orderBy: { displayOrder: 'asc' },
     include: { category: true },
+    take,
   });
 
   res.json(items);

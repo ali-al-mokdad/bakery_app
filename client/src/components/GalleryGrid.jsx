@@ -1,5 +1,27 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { resolveImageUrl } from '../services/api';
+
+const GalleryItem = memo(function GalleryItem({ img, idx, onClick }) {
+  return (
+    <button
+      onClick={() => onClick(img)}
+      className="group relative aspect-square overflow-hidden rounded-2xl shadow-soft animate-fade-in-up"
+      style={{ animationDelay: `${idx * 40}ms` }}
+    >
+      <img
+        src={resolveImageUrl(img.image)}
+        alt={img.caption || 'Bakery gallery photo'}
+        loading="lazy"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+      />
+      {img.caption && (
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-xs font-medium text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          {img.caption}
+        </div>
+      )}
+    </button>
+  );
+});
 
 export default function GalleryGrid({ images }) {
   const [active, setActive] = useState(null);
@@ -16,24 +38,7 @@ export default function GalleryGrid({ images }) {
     <>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {images.map((img, idx) => (
-          <button
-            key={img.id}
-            onClick={() => setActive(img)}
-            className="group relative aspect-square overflow-hidden rounded-2xl shadow-soft animate-fade-in-up"
-            style={{ animationDelay: `${idx * 40}ms` }}
-          >
-            <img
-              src={resolveImageUrl(img.image)}
-              alt={img.caption || 'Bakery gallery photo'}
-              loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-            {img.caption && (
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-xs font-medium text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                {img.caption}
-              </div>
-            )}
-          </button>
+          <GalleryItem key={img.id} img={img} idx={idx} onClick={setActive} />
         ))}
       </div>
 

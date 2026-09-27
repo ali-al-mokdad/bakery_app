@@ -1,8 +1,11 @@
 import api from './api';
 
 export const galleryService = {
-  async getAll({ all = false } = {}) {
-    const { data } = await api.get('/api/gallery', { params: all ? { all: true } : {} });
+  async getAll({ all = false, limit } = {}) {
+    const params = {};
+    if (all) params.all = true;
+    if (limit) params.limit = limit;
+    const { data } = await api.get('/api/gallery', { params });
     return data;
   },
   async create(payload) {

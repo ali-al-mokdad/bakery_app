@@ -3,11 +3,17 @@ const asyncHandler = require('../utils/asyncHandler');
 const { deleteUploadedFile } = require('../utils/fileUtils');
 
 // GET /api/categories - public: only visible categories, unless ?all=true and authenticated
+// Query params: limit
 const getCategories = asyncHandler(async (req, res) => {
   const showAll = req.query.all === 'true' && req.user;
+
+  const parsedLimit = Number(req.query.limit);
+  const take = Number.isInteger(parsedLimit) && parsedLimit > 0 ? parsedLimit : undefined;
+
   const categories = await prisma.category.findMany({
     where: showAll ? {} : { isVisible: true },
     orderBy: { displayOrder: 'asc' },
+    take,
     include: {
       _count: { select: { menuItems: true } },
     },

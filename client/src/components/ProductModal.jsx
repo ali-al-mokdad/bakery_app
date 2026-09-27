@@ -1,16 +1,16 @@
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { resolveImageUrl } from '../services/api';
 import { useSettings } from '../context/SettingsContext';
 import { formatPrice } from './ProductCard';
 import WhatsAppButton from './WhatsAppButton';
 
-export default function ProductModal({ product, onClose }) {
+function ProductModal({ product, onClose }) {
   const { settings } = useSettings();
 
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'auto';
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
@@ -102,3 +102,5 @@ export default function ProductModal({ product, onClose }) {
     </div>
   );
 }
+
+export default memo(ProductModal);
